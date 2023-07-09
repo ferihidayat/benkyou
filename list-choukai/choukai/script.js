@@ -74,7 +74,7 @@ if (inAccess === "masteradmin" || inAccess === "user") {
                   </div>
               `);
                 } else if (inAccess === "user") {
-                  $('#result').append(`
+                  $('#result').append(`<script> var index = "${list.nama}";</script>
                  <div class="col-12">
                   <div class="card d-block">
                     <div class="card-body position-relative">
