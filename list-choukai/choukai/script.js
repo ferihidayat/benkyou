@@ -5,9 +5,11 @@ var inAccess = localStorage.getItem("inAccess");
 if (idFromUrl == null || inAccess == null) {
   window.location.href = "../index.html";
 }
+
 // Mengambil data dari localStorage
 if (inAccess === "masteradmin" || inAccess === "user") {
   $(document).ready(function () {
+
     $.ajax({
       url: "https://raw.githubusercontent.com/ferihidayat/choukaifile/main/data.json",
       dataType: "json",
@@ -16,15 +18,14 @@ if (inAccess === "masteradmin" || inAccess === "user") {
       },
       success: function (data) {
         $(".spinner-border").css("display", "none");
-        if (data.listChoukai.access === true) {
 
-        }
         data.listChoukai.forEach(function (list) {
           if (list.id === idFromUrl) {
             list.soal.forEach(function (choukai) {
               // Mengambil audio
-              if (inAccess === "masteradmin") {
-                $('#result').append(`
+              if (list.access === true) {
+                if (inAccess === "masteradmin") {
+                  $('#result').append(`<script> var index = "${list.nama}";</script>
                   <div class="col-12">
                     <div class="card d-block">
                       <div class="card-body position-relative">
@@ -72,8 +73,8 @@ if (inAccess === "masteradmin" || inAccess === "user") {
                     </div>
                   </div>
               `);
-              } else if (inAccess === "user") {
-                $('#result').append(`
+                } else if (inAccess === "user") {
+                  $('#result').append(`
                  <div class="col-12">
                   <div class="card d-block">
                     <div class="card-body position-relative">
@@ -90,10 +91,13 @@ if (inAccess === "masteradmin" || inAccess === "user") {
                   </div>
                 </div>
               `);
-              } else if (inAccess === null) {
+                } else if (inAccess === null) {
+                  window.location.href = "../index.html";
+                }
+              } else {
                 window.location.href = "../index.html";
-              }
 
+              }
             });
           }
         });

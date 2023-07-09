@@ -4,8 +4,12 @@ $(document).ready(function () {
   $.ajax({
     url: "https://raw.githubusercontent.com/ferihidayat/choukaifile/main/data.json", // Ubah sesuai dengan URL atau path file JSON Anda
     dataType: "json",
+    beforeSend: function () {
+      $(".spinner-border").css("display", "block");
+    },
     success: function (data) {
       $.each(data.listChoukai, function (index, item) {
+        $(".spinner-border").css("display", "none");
         $("#listchoukai").append(`
           <tr>
             <td>${item.nama}</td>
@@ -63,8 +67,3 @@ $(document).ready(function () {
     }
   });
 });
-
-// Daftar nama website untuk setiap halaman
-const websiteNames = {
-  index: "Feri Hidayat - List Choukai",
-};
