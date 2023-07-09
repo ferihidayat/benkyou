@@ -1,54 +1,70 @@
-  // Mendapatkan id dari URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const inAccess = urlParams.get('access'); // Mengambil nilai parameter 'id' dari URL
+$(document).ready(function () {
+  var inAccess = localStorage.getItem("inAccess");
 
-  $(document).ready(function () {
-    $.ajax({
-      url: "https://raw.githubusercontent.com/ferihidayat/choukaifile/main/data.json", // Ubah sesuai dengan URL atau path file JSON Anda
-      dataType: "json",
-      beforeSend: function () {
-        $(".spinner-border").css("display", "block");
-      },
-      success: function (data) {
-        $(".spinner-border").css("display", "none");
-        $.each(data.listChoukai, function (index, item) {
-          $("#listchoukai").append(`
+  $.ajax({
+    url: "https://raw.githubusercontent.com/ferihidayat/choukaifile/main/data.json", // Ubah sesuai dengan URL atau path file JSON Anda
+    dataType: "json",
+    success: function (data) {
+      $.each(data.listChoukai, function (index, item) {
+        $("#listchoukai").append(`
           <tr>
             <td>${item.nama}</td>
             <td>${item.tingkat}</td>
             <td>${item.jumlah}</td>
             <td class="table-action text-center">
-              <a href="choukai/index.html?access=` + inAccess + `&id=${item.id}" id="accessbutton-${item.id}" style="display: none;" class="btn btn-primary">Buka</a>
-                <a id="block-${item.id}" style="display: none;">Tutup</a>
+              <a href="choukai/index.html?id=${item.id}" id="accessbutton-${item.id}" style="display: none;" class="btn btn-primary">Buka</a>
+              <a onclick="setFocusToInput()" href="javascript:void(0);" id="blockbutton-${item.id}" style="display: none;">Masukan Kode</a>
+              <a id="block-${item.id}" style="display: none;">Tutup</a>
             </td>
           </tr>
         `);
 
-          if (inAccess && (inAccess === "masteradmin" || inAccess === "user")) {
-            $("#accessbutton-" + item.id).show();
+        if (inAccess && (inAccess === "masteradmin" || inAccess === "user")) {
+          $("#accessForm").hide();
+          $("#accessbutton-" + item.id).show();
+          $("#blockbutton-" + item.id).hide();
+          if (item.access === true) {
             $("#block-" + item.id).hide();
+            $("#blockbutton-" + item.id).hide();
+            $("#accessbutton-" + item.id).show();
           } else {
-            $("#accessForm").show();
-            $("#accessbutton-" + item.id).hide();
             $("#block-" + item.id).show();
+            $("#accessbutton-" + item.id).hide();
+            $("#blockbutton-" + item.id).hide();
           }
-        });
-      },
-      error: function (xhr, status, error) {
-        console.log("Error: " + error);
-      }
-    });
-
+        } else {
+          $("#accessForm").show();
+          $("#accessbutton-" + item.id).hide();
+          $("#blockbutton-" + item.id).show();
+        }
+      });
+    },
+    error: function (xhr, status, error) {
+      console.log("Error: " + error);
+    }
   });
 
-  // Daftar nama website untuk setiap halaman
-  const websiteNames = {
-    index: "Feri Hidayat - List Choukai",
-  };
+  // Handle login form submit
+  $("#accessForm").submit(function (event) {
+    event.preventDefault();
 
-  // Mendapatkan halaman saat ini
-  const currentPage = window.location.pathname.split("/").pop().replace(".html", "");
+    // Simpan status akses ke localStorage
+    var kodeaccess = $("#kodeaccess").val();
 
-  // Mengganti judul dan nama website sesuai dengan halaman saat ini
-  document.getElementById("website-title").textContent = websiteNames[currentPage];
-  document.getElementById("website-name").textContent = websiteNames[currentPage];
+    // Contoh validasi login sederhana
+    if (kodeaccess === "masteradmin") {
+      localStorage.setItem("inAccess", "masteradmin");
+      window.location.href = "index.html";
+    } else if (kodeaccess === "user") {
+      localStorage.setItem("inAccess", "user");
+      window.location.href = "index.html";
+    } else {
+      $("#accessMessage").text("Silakan cek kembali kode akses.");
+    }
+  });
+});
+
+// Daftar nama website untuk setiap halaman
+const websiteNames = {
+  index: "Feri Hidayat - List Choukai",
+};

@@ -56,6 +56,21 @@
             List Choukai( &nbsp;<ruby>聴解<rt>ちょうかい</rt></ruby>&nbsp; )
           </p>
           <div class="col-12 mb-5">
+            <form id="accessForm">
+              <div class="mb-3">
+                <label class="text-label form-label" for="kodeaccess">Kode Akses</label>
+                <div class="input-group">
+                  <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                  <input type="text" id="kodeaccess" name="kodeaccess" class="form-control" placeholder="Kode Akses"
+                    required>
+                  <div class="invalid-feedback">
+                    Please Enter.
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn me-2 btn-primary">Submit</button>
+              <p id="accessMessage"></p>
+            </form>
 
             <table class="table table-striped table-centered">
               <thead>
