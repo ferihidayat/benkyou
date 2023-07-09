@@ -14,6 +14,9 @@
         $.each(data.listChoukai, function (index, item) {
           $("#listchoukai").append(`
           <tr>
+            <td>${item.nama}</td>
+            <td>${item.tingkat}</td>
+            <td>${item.jumlah}</td>
             <td class="table-action text-center">
               <a href="choukai/index.html?access=` + inAccess + `&id=${item.id}" id="accessbutton-${item.id}" style="display: none;" class="btn btn-primary">Buka</a>
                 <a id="block-${item.id}" style="display: none;">Tutup</a>
@@ -21,14 +24,14 @@
           </tr>
         `);
 
-          // if (inAccess && (inAccess === "masteradmin" || inAccess === "user")) {
-          //   $("#accessbutton-" + item.id).show();
-          //   $("#block-" + item.id).hide();
-          // } else {
-          //   $("#accessForm").show();
-          //   $("#accessbutton-" + item.id).hide();
-          //   $("#block-" + item.id).show();
-          // }
+          if (inAccess && (inAccess === "masteradmin" || inAccess === "user")) {
+            $("#accessbutton-" + item.id).show();
+            $("#block-" + item.id).hide();
+          } else {
+            $("#accessForm").show();
+            $("#accessbutton-" + item.id).hide();
+            $("#block-" + item.id).show();
+          }
         });
       },
       error: function (xhr, status, error) {
