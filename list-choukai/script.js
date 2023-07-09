@@ -1,5 +1,7 @@
 $(document).ready(function () {
-  var inAccess = localStorage.getItem("inAccess");
+  // Mendapatkan id dari URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const inAccess = urlParams.get('access'); // Mengambil nilai parameter 'id' dari URL
   //  <a id="block-${item.id}" style="display: none;">Tutup</a>
   $.ajax({
     url: "https://raw.githubusercontent.com/ferihidayat/choukaifile/main/data.json", // Ubah sesuai dengan URL atau path file JSON Anda
@@ -16,14 +18,13 @@ $(document).ready(function () {
             <td>${item.tingkat}</td>
             <td>${item.jumlah}</td>
             <td class="table-action text-center">
-              <a href="choukai/index.html?id=${item.id}" id="accessbutton-${item.id}" style="display: none;" class="btn btn-primary">Buka</a>
+              <a href="choukai/index.html?access=` + inAccess + `&id=${item.id}" id="accessbutton-${item.id}" style="display: none;" class="btn btn-primary">Buka</a>
               <a onclick="setFocusToInput()" href="javascript:void(0);" id="blockbutton-${item.id}" style="display: none;">Masukan Kode</a>
             </td>
           </tr>
         `);
 
         if (inAccess && (inAccess === "masteradmin" || inAccess === "user")) {
-          $("#accessForm").hide();
           $("#accessbutton-" + item.id).show();
           $("#blockbutton-" + item.id).hide();
         } else {
@@ -38,24 +39,6 @@ $(document).ready(function () {
     }
   });
 
-  // Handle login form submit
-  $("#accessForm").submit(function (event) {
-    event.preventDefault();
-
-    // Simpan status akses ke localStorage
-    var kodeaccess = $("#kodeaccess").val();
-
-    // Contoh validasi login sederhana
-    if (kodeaccess === "masteradmin") {
-      localStorage.setItem("inAccess", "masteradmin");
-      window.location.href = "index.html";
-    } else if (kodeaccess === "user") {
-      localStorage.setItem("inAccess", "user");
-      window.location.href = "index.html";
-    } else {
-      $("#accessMessage").text("Silakan cek kembali kode akses.");
-    }
-  });
 });
 
 // Daftar nama website untuk setiap halaman

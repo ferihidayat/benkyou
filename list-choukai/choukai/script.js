@@ -1,12 +1,12 @@
 // Mendapatkan id dari URL
 const urlParams = new URLSearchParams(window.location.search);
 const idFromUrl = urlParams.get('id'); // Mengambil nilai parameter 'id' dari URL
-// const inAccess = urlParams.get('id'); // Mengambil nilai parameter 'id' dari URL
-if (idFromUrl == null) {
+const inAccess = urlParams.get('access');
+if (idFromUrl == null || inAccess == null) {
   window.location.href = "../index.html";
 }
 // Mengambil data dari localStorage
-const inAccess = localStorage.getItem("inAccess");
+
 
 if (inAccess === "masteradmin" || inAccess === "user") {
   $(document).ready(function () {
